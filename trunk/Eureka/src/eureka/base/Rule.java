@@ -2,16 +2,13 @@ package eureka.base;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-
-import eureka.environment.Effector;
+import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import org.hibernate.annotations.ManyToAny;
+import eureka.environment.Effector;
 
 /**
  * Representa uma regra com um conjunto de cl�usulas antecedentes e um cl�usula consequente
