@@ -1,0 +1,4 @@
+R0 : SE primeiro = sim OU segundo = sim OU terceiro = sim ENTAO premiacao <- sim;
+R1 : SE premiacao = sim ENTAO vencedor <- sim;
+R2 : SE medalha = ouro ENTAO primeiro <- sim;
+R3 : SE participou = sim E premiacao != sim OU participou = sim E vencedor != sim ENTAO vencedor <- nao;

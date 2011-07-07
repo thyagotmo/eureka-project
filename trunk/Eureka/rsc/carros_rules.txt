@@ -1,0 +1,64 @@
+Monociclo :
+	SE Tipo do Veiculo = ciclo
+		E Numero de Rodas = 1
+		E Tem motor = nao
+	ENTAO Veiculo <- monociclo
+;
+
+Bicicleta :
+	SE Tipo do Veiculo = ciclo
+		E Numero de Rodas = 2
+		E Tem motor = nao
+	ENTAO Veiculo <- bicicleta
+;
+
+Triciclo :
+
+	SE Tipo do Veiculo = ciclo E
+	 Numero de Rodas = 3 E
+	 Tem motor = nao
+	ENTAO Veiculo <- triciclo
+;
+		
+Motocicleta :
+	SE Tipo do Veiculo = ciclo
+		E Numero de Rodas = 2
+		E Tem motor = sim
+	ENTAO Veiculo <- motocicleta
+;
+
+SportsCar :
+	SE Tipo do Veiculo = automovel
+		E Tamanho = pequeno
+		E Numero de Portas = 2
+	ENTAO Veiculo <- carro esportivo
+;
+
+Sedan :
+	SE Tipo do Veiculo = automovel
+		E Tamanho = medio
+		E Numero de Portas = 4
+	ENTAO Veiculo <- Sedan
+;
+
+MiniVan :
+	SE Tipo do Veiculo = automovel
+		E Tamanho = medio
+		E Numero de Portas = 3
+	ENTAO Veiculo <- Minivan
+;
+
+SUV :
+	SE Tipo do Veiculo = automovel
+		E Tamanho = grande
+		E Numero de Portas = 3
+	ENTAO Veiculo <- Veiculo Esportivo Utilitario
+;
+
+Ciclo : 
+	SE Numero de Rodas < 4 ENTAO Tipo do Veiculo <- ciclo
+;
+
+Automovel:
+	SE Numero de Rodas = 4 E Tem motor = sim ENTAO Tipo do Veiculo <- automovel
+; 

@@ -1,0 +1,3 @@
+
+Numero de Rodas <- 2;
+Tem motor <- sim;
