@@ -8,13 +8,15 @@ import java.util.Set;
 
 import eureka.view.Trace;
 
-/**Classe que mantém as variáveis e seus valores na memória*/
+/**
+ * Classe que mantï¿½m as variï¿½veis e seus valores na memï¿½ria
+ */
 public class WorkingMemory {
 	private Map<String, RuleVariable> variables = new HashMap<String, RuleVariable>();
 	private Set<String> referredVariables = new HashSet<String>();
 	public WorkingMemory(){}
 	
-	/**Remove todas as variáveis da Working Memory*/
+	/**Remove todas as variï¿½veis da Working Memory*/
 	public void reset() {
 		variables.clear();
 		referredVariables.clear();
@@ -28,7 +30,7 @@ public class WorkingMemory {
 	public boolean wasReferred(String variable) {
 		return referredVariables.contains(variable);
 	}
-	/**Adiciona uma variável à memória*/
+	/**Adiciona uma variï¿½vel ï¿½ memï¿½ria*/
 	public void addVariable(RuleVariable variable) {
 		variables.put(variable.getLabel(), variable);
 	}
@@ -47,15 +49,15 @@ public class WorkingMemory {
 			this.variables.remove(label);
 		}
 	}
-	/**Retorna a varia´vel com o nome especificado*/
+	/**Retorna a variaï¿½vel com o nome especificado*/
 	public RuleVariable getVariable(String label) {
 		return variables.get(label);
 	}
-	/**Retorna o conjunto de todas as variáveis na memória*/
+	/**Retorna o conjunto de todas as variï¿½veis na memï¿½ria*/
 	public Collection<RuleVariable> getAllVariables() {
 		return variables.values();
 	}
-	/**Imprime o estado atual da memória*/
+	/**Imprime o estado atual da memï¿½ria*/
 	public void printState() {
 		String s = "";
 		for(RuleVariable variable : variables.values()) {

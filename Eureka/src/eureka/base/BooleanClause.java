@@ -13,7 +13,6 @@ public class BooleanClause extends Clause {
 
     private EOperator op;//operador
     private String value;//valor usado pelo operador
-    private Boolean truth;//indica se a clusula  verdade ou no
 
     public BooleanClause() {
     }
@@ -47,15 +46,7 @@ public class BooleanClause extends Clause {
         }
     }
 
-    /**
-     * Configura o valor de veracidade da clusula
-     */
-    @Override
-    public void setTruth(Boolean truth) {
-        this.truth = truth;
-        notifyAllObservers();
-    }
-
+  
     public EOperator getOperator() {
         return op;
     }
@@ -74,7 +65,7 @@ public class BooleanClause extends Clause {
     public Boolean check(WorkingMemory wm) {
         //recebe o valor da varivel na working memory
         RuleVariable variable = wm.getVariable(getVariableLabel());
-
+        Boolean truth = getTruth();
         if (variable == null) {//varivel ainda no possui valor
             truth = null;
         } else {
@@ -107,12 +98,6 @@ public class BooleanClause extends Clause {
             }
         }
         notifyAllObservers();//notifica as regras que contm a clusula
-        return truth;
-    }
-
-    /**Retorna <i>true</i> se a clusula  verdadeira*/
-    @Override
-    public Boolean getTruth() {
         return truth;
     }
 
