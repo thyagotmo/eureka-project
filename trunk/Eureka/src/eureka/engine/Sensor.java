@@ -1,9 +1,12 @@
 package eureka.engine;
 
+import javax.persistence.Entity;
 import eureka.base.Clause;
 import eureka.base.WorkingMemory;
 
-public class Sensor extends Clause{
+
+@Entity
+public class Sensor extends Clause {
 	
 	private String label;
 	private String value;

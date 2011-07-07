@@ -3,16 +3,43 @@ package eureka.base;
 import java.util.ArrayList;
 import java.util.List;
 
-import eureka.environment.Effector;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
-/**Representa uma regra com um conjunto de cláusulas antecedentes e um cláusula consequente*/
+import eureka.environment.Effector;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import org.hibernate.annotations.ManyToAny;
+
+/**
+ * Representa uma regra com um conjunto de clï¿½usulas antecedentes e um clï¿½usula consequente
+ */
+@Entity
 public class Rule implements Observer {
+	
+	@Id
+	@GeneratedValue
+	private Long id;
+	
 	private String label;//nome da regra
-	private List<Clause> antecedent;//lista de cláusulas antecedentes(predicado)
-	private BooleanClause consequent;//cláusula consequente
-	private Boolean truth;//valor que indica se todos os precedentes são verdade
-	private List<Effector> effectors;//Atuadores, ainda não implementado
+        
+	@OneToMany
+	private List<Clause> antecedent;//lista de clï¿½usulas antecedentes(predicado)
+        @OneToOne
+	private BooleanClause consequent;//clï¿½usula consequente
+	
+	private Boolean truth;//valor que indica se todos os precedentes sï¿½o verdade
+	@ManyToMany
+	private List<Effector> effectors;//Atuadores, ainda nï¿½o implementado
+	
 	private boolean fired;
+	
+	protected Rule() {
+		// para o hibernate!
+	}
+	
 	
 	/**Uma regra possui um identificador, uma lista de antecedentes e um consequente*/
 	public Rule (String label, Clause[] antecedent, BooleanClause consequent) {
@@ -30,24 +57,24 @@ public class Rule implements Observer {
 	public String getLabel() {
 		return this.label;
 	}
-	/**Cadastra um atudador para ser disparado quando a regra é ativada*/
+	/**Cadastra um atudador para ser disparado quando a regra ï¿½ ativada*/
 	public void subscribeEffector(Effector effector) {
 		if(!effectors.contains(effector)) {
 			effectors.add(effector);
 		}
 	}
 	
-	/**Retrona a lista de cláusulas no predicado da regra*/
+	/**Retrona a lista de clï¿½usulas no predicado da regra*/
 	public List<Clause> getAntecedent() {
 		return this.antecedent;
 	}
-	/**Retorna a cláusula consequente da regra*/
+	/**Retorna a clï¿½usula consequente da regra*/
 	public BooleanClause getConsequent() {
 		return this.consequent;
 	}
-	/**Retorna <i>true</i> se todas as cláusulas no predicado da
-	 * regra são satisfeitos, <i>false</i> caso pelo menos uma das
-	 * regras seja falsa ou <i>null</i> se ainda não está definido*/
+	/**Retorna <i>true</i> se todas as clï¿½usulas no predicado da
+	 * regra sï¿½o satisfeitos, <i>false</i> caso pelo menos uma das
+	 * regras seja falsa ou <i>null</i> se ainda nï¿½o estï¿½ definido*/
 	public Boolean getTruth() {
 		return this.truth;
 	}
