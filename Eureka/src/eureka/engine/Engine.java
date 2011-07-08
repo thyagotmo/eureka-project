@@ -7,7 +7,7 @@ import eureka.base.WorkingMemory;
 
 public interface Engine {
 
-    void init(WorkingMemory wm, RuleBase rb, Hashtable<Object, Object> params);
+    void init(WorkingMemory wm, Hashtable<Object, Object> params);
 
     void execute();
 }
