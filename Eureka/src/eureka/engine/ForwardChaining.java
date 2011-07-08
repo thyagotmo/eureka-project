@@ -37,7 +37,7 @@ public class ForwardChaining implements Engine {
     private List<Rule> match() {
         List<Rule> conflictSet = new ArrayList<Rule>();
         //Para cada regra no banco de regras
-        for (Rule rule : rb.getAllRules()) {
+        for (Rule rule : rb.findAll()) {
 
             //para cada precedente
             for (Clause precedent : rule.getAntecedent()) {

@@ -2,6 +2,7 @@ package eureka.dao;
 
 import eureka.util.HibernateUtil;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -31,7 +32,14 @@ public abstract class HibernateDAO<ID extends Serializable, E> implements
     }
 
     @Override
-    public List<E> findAll() {
+    public void removeAll(Collection<E> all) {
+        for (E e:all) {
+            remove(e);
+        }
+    }
+
+    @Override
+    public Collection<E> findAll() {
         Criteria crit = getSession().createCriteria(persistentClass);
         return crit.list();
     }

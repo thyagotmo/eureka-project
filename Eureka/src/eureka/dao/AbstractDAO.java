@@ -1,14 +1,17 @@
 package eureka.dao;
 
-import java.util.List;
+import java.util.Collection;
 
 public interface AbstractDAO<ID, E> {
 	
 	void saveOrUpdate(E e);
 	
 	void remove(E e);
+
+        void removeAll(Collection<E> all);
 	
 	E findById(ID id);
 	
-	List<E> findAll();
+	Collection<E> findAll();
+
 }
