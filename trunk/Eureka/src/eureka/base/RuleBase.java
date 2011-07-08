@@ -1,5 +1,6 @@
 package eureka.base;
 
+import eureka.dao.RuleDAO;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -7,41 +8,47 @@ import java.util.Map;
 /**
  * Base de dados que contm todas as regras
  */
-public class RuleBase {
+public class RuleBase implements RuleDAO {
 
     /**
      * Mapa que contm todas as regras mapeadas pelo nome
      */
     private Map<String, Rule> rules = new HashMap<String, Rule>();
 
-    /**
-     * Apaga todas as regras da base de regras
-     */
-    public void reset() {
-        rules.clear();
-    }
-
+    @Override
     public void addAllRules(Collection<Rule> rules) {
         for (Rule rule : rules) {
             this.rules.put(rule.getLabel(), rule);
         }
     }
 
+    @Override
+    public Rule findByLabel(String label) {
+        return rules.get(label);
+    }
     /**
      * Adiciona uma regra na base de regras
      */
-    public void addRule(Rule rule) {
+    @Override
+    public void saveOrUpdate(Rule rule) {
         rules.put(rule.getLabel(), rule);
     }
 
     /**
      * Remove uma regra da base de regras
      */
-    public void removeRule(String ruleLabel) {
+    @Override
+    public void remove(String ruleLabel) {
         rules.remove(ruleLabel);
     }
 
-    public void removeAllRules(Collection<Rule> rules) {
+    @Override
+    public void remove(Rule e) {
+        remove(e.getLabel());
+    }
+
+    @Override
+    public void removeAll(Collection<Rule> rules) {
         for (Rule rule : rules) {
             this.rules.remove(rule.getLabel());
         }
@@ -56,7 +63,14 @@ public class RuleBase {
     /**
      * Retrona todas as regras
      */
-    public Collection<Rule> getAllRules() {
+    @Override
+    public Collection<Rule> findAll() {
         return rules.values();
     }
+
+    @Override
+    public Rule findById(Long id) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
 }

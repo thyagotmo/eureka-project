@@ -3,6 +3,7 @@ package eureka.base;
 import javax.persistence.Entity;
 
 import eureka.base.exceptions.InvalidOperatorException;
+import javax.persistence.Column;
 
 /**
  * Representa uma clusula da regra que pode ser uma condio
@@ -104,4 +105,27 @@ public class BooleanClause extends Clause {
     public String toString() {
         return getVariableLabel() + " " + op.getSymbol() + " " + value;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof BooleanClause) {
+            BooleanClause c = (BooleanClause)obj;
+            if(c.getOperator().equals(getOperator()) &&
+                    c.getVariableLabel().equals(getVariableLabel()) &&
+                    c.getTargetValue().equals(getTargetValue())) {
+            return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 17 * hash + (this.op != null ? this.op.hashCode() : 0);
+        hash = 17 * hash + (this.value != null ? this.value.hashCode() : 0);
+        hash += getVariableLabel().hashCode();
+        return hash;
+    }
+
 }

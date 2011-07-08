@@ -39,7 +39,7 @@ public class BackwardChaining implements Engine {
     private List<Rule> goalRules(RuleBase rb, String variable, String value) {
 
         List<Rule> goalRules = new ArrayList<Rule>();
-        for (Rule rule : rb.getAllRules()) {
+        for (Rule rule : rb.findAll()) {
             if (rule.getConsequent().getVariableLabel().equals(variable)) {
                 if (value != null) {
                     if (rule.getConsequent().getTargetValue().equals(value)) {

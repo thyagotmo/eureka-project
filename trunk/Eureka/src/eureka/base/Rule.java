@@ -10,6 +10,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import eureka.environment.Effector;
 import javax.persistence.Column;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 /**
  * Representa uma regra com um conjunto de cl�usulas antecedentes e um 
@@ -25,6 +27,7 @@ public class Rule implements Observer {
     @Column(unique = true)
     private String label;//nome da regra
     @OneToMany
+    @Cascade(CascadeType.ALL)
     private List<Clause> antecedent;//lista de cl�usulas antecedentes(predicado)
     @OneToOne
     private BooleanClause consequent;//cl�usula consequente

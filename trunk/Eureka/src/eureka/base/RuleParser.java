@@ -1,14 +1,17 @@
 package eureka.base;
 
+import eureka.dao.ClauseDAO;
+import eureka.dao.FacadeDAO;
+import eureka.dao.RuleDAO;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
-import eureka.engine.Sensor;
+import eureka.util.HibernateUtil;
 import eureka.view.Trace;
+import java.util.List;
 
 public class RuleParser {
 
@@ -22,8 +25,10 @@ public class RuleParser {
     private static final String EFFECTOR = "ATUADOR";
 
     /**Carrega as regras na base de regras baseado na definio de um arquivo de texto*/
-    public static List<Rule> loadRules(String rulePath) {
-        List<Rule> rules = new ArrayList<Rule>();
+    public static void loadRulesOnDatabase(String rulePath) {
+        RuleDAO ruleDAO = FacadeDAO.getFacadeDAO().getRuleDAO();
+        ClauseDAO clauseDAO = FacadeDAO.getFacadeDAO().getClauseDAO();
+        
         if (rulePath != null) {
             try {
                 BufferedReader reader = new BufferedReader(new FileReader(new File(rulePath)));
@@ -57,17 +62,15 @@ public class RuleParser {
                             Clause[] predicateClauses = new Clause[clauses.length];
 
                             for (int i = 0; i < clauses.length; i++) {
-                                String clause = clauses[i].trim();
-                                if (clause.contains(SENSOR + "(")) {
-                                    predicateClauses[i] = new Sensor(clauses[i].trim());
-                                } else {
-                                    predicateClauses[i] = new BooleanClause(clauses[i].trim());
-                                }
+                                
+                                predicateClauses[i] = new BooleanClause(clauses[i].trim());
                             }
                             BooleanClause consequentClause = new BooleanClause(consequent.trim());
                             if (consequentClause.getOperator().equals(EOperator.RECEIVE)) {
                                 Rule rule = new Rule(rulelabel, predicateClauses, consequentClause);
-                                rules.add(rule);
+                                clauseDAO.saveOrUpdate(consequentClause);
+
+                                ruleDAO.saveOrUpdate(rule);
                             } else {
                                 Trace.appendMessage("Erro", " cl�usula consequente n�o � de atribui��o: " + consequentClause);
                             }
@@ -78,7 +81,12 @@ public class RuleParser {
                 e.printStackTrace();
             }
         }
-        return rules;
+        
+    }
+    public static void main(String[] args) {
+        HibernateUtil.beginTransaction();
+        loadRulesOnDatabase("rsc/carros_rules.txt");
+        HibernateUtil.commit();
     }
 
     private static List<String> breakOrRules(String label, String rule) {
@@ -90,7 +98,12 @@ public class RuleParser {
 
 
         for (int i = 0; i < separacaoOU.length; i++) {
-            String newRule = label + i + " " + LABEL_RULE_DIVISOR + " ";
+            String newRule = label;
+            if(i > 0) {
+                newRule += " " + i + " " + LABEL_RULE_DIVISOR + " ";
+            }else {
+                newRule += " " + LABEL_RULE_DIVISOR + " ";
+            }
             if (i > 0) {
                 newRule += IF + " ";
             }
