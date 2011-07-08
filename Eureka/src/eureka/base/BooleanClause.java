@@ -46,7 +46,6 @@ public class BooleanClause extends Clause {
         }
     }
 
-  
     public EOperator getOperator() {
         return op;
     }
