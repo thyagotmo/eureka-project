@@ -12,7 +12,8 @@ import eureka.environment.Effector;
 import javax.persistence.Column;
 
 /**
- * Representa uma regra com um conjunto de cl�usulas antecedentes e um cl�usula consequente
+ * Representa uma regra com um conjunto de cl�usulas antecedentes e um 
+ * cl�usula consequente
  */
 @Entity
 public class Rule implements Observer {
@@ -36,7 +37,10 @@ public class Rule implements Observer {
         // para o hibernate!
     }
 
-    /**Uma regra possui um identificador, uma lista de antecedentes e um consequente*/
+    /**
+     * Uma regra possui um identificador, uma lista de antecedentes e 
+     * um consequente
+     */
     public Rule(String label, Clause[] antecedent, BooleanClause consequent) {
         this.label = label;
         this.antecedent = new ArrayList<Clause>();
@@ -49,31 +53,41 @@ public class Rule implements Observer {
         setFired(false);
     }
 
-    /**Retorna o nome da Regra*/
+    /**
+     * Retorna o nome da Regra
+     */
     public String getLabel() {
         return this.label;
     }
 
-    /**Cadastra um atudador para ser disparado quando a regra � ativada*/
+    /**
+     * Cadastra um atudador para ser disparado quando a regra � ativada
+     */
     public void subscribeEffector(Effector effector) {
         if (!effectors.contains(effector)) {
             effectors.add(effector);
         }
     }
 
-    /**Retrona a lista de cl�usulas no predicado da regra*/
+    /**
+     * Retrona a lista de cl�usulas no predicado da regra
+     */
     public List<Clause> getAntecedent() {
         return this.antecedent;
     }
 
-    /**Retorna a cl�usula consequente da regra*/
+    /**
+     * Retorna a cl�usula consequente da regra
+     */
     public BooleanClause getConsequent() {
         return this.consequent;
     }
 
-    /**Retorna <i>true</i> se todas as cl�usulas no predicado da
+    /**
+     * Retorna <i>true</i> se todas as cl�usulas no predicado da
      * regra s�o satisfeitos, <i>false</i> caso pelo menos uma das
-     * regras seja falsa ou <i>null</i> se ainda n�o est� definido*/
+     * regras seja falsa ou <i>null</i> se ainda n�o est� definido
+     */
     public Boolean getTruth() {
         return this.truth;
     }
@@ -104,10 +118,13 @@ public class Rule implements Observer {
         return fired;
     }
 
-    /**ativa o consequente da regra e dispara os atuadores cadastrados a ela*/
+    /**
+     * ativa o consequente da regra e dispara os atuadores cadastrados a ela
+     */
     public void fire(WorkingMemory wm) {
         if (consequent.getOperator().equals(EOperator.RECEIVE)) {
-            wm.addVariable(new RuleVariable(consequent.getVariableLabel(), consequent.getTargetValue()));
+            wm.addVariable(new RuleVariable(consequent.getVariableLabel(), 
+                    consequent.getTargetValue()));
         }
         for (Effector effector : effectors) {
             effector.fire();
