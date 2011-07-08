@@ -14,6 +14,7 @@ public abstract class Effector {
     private String label;
 
     protected Effector() {
+        //para o hibernate
     }
 
     public Effector(String label) {
