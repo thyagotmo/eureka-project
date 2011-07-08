@@ -9,6 +9,8 @@ import eureka.base.Rule;
 import eureka.base.RuleBase;
 import eureka.base.WorkingMemory;
 import eureka.base.exceptions.InvalidOperatorException;
+import eureka.dao.FacadeDAO;
+import eureka.dao.RuleDAO;
 
 /**
  * Algoritmo que tenta extrair o mximo de informao de um conjunto de fatos
@@ -23,7 +25,7 @@ public class ForwardChaining implements Engine {
     private List<Rule> conflictSet;
     private List<Rule> excludedSet;
     private WorkingMemory wm;
-    private RuleBase rb;
+    private RuleDAO rb;
 	
     public ForwardChaining() {
         this.conflictSet = new ArrayList<Rule>();
@@ -36,9 +38,9 @@ public class ForwardChaining implements Engine {
      */
     private List<Rule> match() {
         List<Rule> conflictSet = new ArrayList<Rule>();
+        
         //Para cada regra no banco de regras
         for (Rule rule : rb.findAll()) {
-
             //para cada precedente
             for (Clause precedent : rule.getAntecedent()) {
                 try {
@@ -50,6 +52,7 @@ public class ForwardChaining implements Engine {
                     e.printStackTrace();
                 }
             }
+            rule.update();
             //se a regra pode ser acionada, adiciona do grupo de conflito
             if (rule.getTruth() != null && rule.getTruth() && !rule.hasFired()) {
 
@@ -71,9 +74,9 @@ public class ForwardChaining implements Engine {
      * e o conjunto de fatos
      */
     @Override
-    public void init(WorkingMemory wm, RuleBase rb, Hashtable<Object, Object> params) {
+    public void init(WorkingMemory wm,Hashtable<Object, Object> params) {
         this.wm = wm;
-        this.rb = rb;
+        this.rb = FacadeDAO.getFacadeDAO().getRuleDAO();
         conflictSet.clear();
         excludedSet.clear();
     }

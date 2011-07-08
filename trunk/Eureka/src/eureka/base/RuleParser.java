@@ -64,11 +64,12 @@ public class RuleParser {
                             for (int i = 0; i < clauses.length; i++) {
                                 
                                 predicateClauses[i] = new BooleanClause(clauses[i].trim());
+                                clauseDAO.saveOrUpdate(predicateClauses[i]);
                             }
                             BooleanClause consequentClause = new BooleanClause(consequent.trim());
+                            clauseDAO.saveOrUpdate(consequentClause);
                             if (consequentClause.getOperator().equals(EOperator.RECEIVE)) {
                                 Rule rule = new Rule(rulelabel, predicateClauses, consequentClause);
-                                clauseDAO.saveOrUpdate(consequentClause);
 
                                 ruleDAO.saveOrUpdate(rule);
                             } else {

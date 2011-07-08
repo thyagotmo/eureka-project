@@ -7,15 +7,14 @@ import javax.persistence.Id;
 import javax.persistence.Transient;
 
 @Entity
-public abstract class Clause extends Subject implements Serializable {
+public abstract class Clause implements Serializable {
 
     @Id
     @GeneratedValue
     private Long id;
-
+    private String variable;
     @Transient
     private Boolean truth;
-    private String variable;
     
     protected Clause() {
         //para o hibernate
@@ -30,7 +29,6 @@ public abstract class Clause extends Subject implements Serializable {
      */
     public void setTruth(Boolean truth) {
         this.truth = truth;
-        notifyAllObservers();
     }
 
     /**
@@ -43,7 +41,7 @@ public abstract class Clause extends Subject implements Serializable {
     /**
      * Verifica se a clusula  veradeira checando os valores na Working Memory
      */
-    public abstract Boolean check(WorkingMemory wm);
+    public abstract void check(WorkingMemory wm);
 
     /**
      * Retorna <i>true</i> se a clusula  verdadeira

@@ -13,6 +13,8 @@ import eureka.base.RuleBase;
 import eureka.base.RuleVariable;
 import eureka.base.WorkingMemory;
 import eureka.base.exceptions.InvalidOperatorException;
+import eureka.dao.FacadeDAO;
+import eureka.dao.RuleDAO;
 import eureka.view.MessengerPopup;
 
 /**
@@ -28,7 +30,7 @@ public class BackwardChaining implements Engine {
     private static final String INFO_REQUEST_TITLE = Messages.getString("BackwardChaining.INFO_REQUEST_TITLE");
 
     private WorkingMemory wm;
-    private RuleBase rb;
+    private RuleDAO rb;
     private Hashtable<Object, Object> params;
 
     /**
@@ -36,8 +38,10 @@ public class BackwardChaining implements Engine {
      * <i>variable</i> ou s as regras que possui <i>variable</i> no consequente
      * caso <i>valu</i> seja null
      */
-    private List<Rule> goalRules(RuleBase rb, String variable, String value) {
+    private List<Rule> goalRules(String variable, String value) {
 
+        rb = FacadeDAO.getFacadeDAO().getRuleDAO();
+        
         List<Rule> goalRules = new ArrayList<Rule>();
         for (Rule rule : rb.findAll()) {
             if (rule.getConsequent().getVariableLabel().equals(variable)) {
@@ -60,11 +64,10 @@ public class BackwardChaining implements Engine {
      * null)
      */
     @Override
-    public void init(WorkingMemory wm, RuleBase rb,
+    public void init(WorkingMemory wm,
             Hashtable<Object, Object> params) {
         this.params = params;
         this.wm = wm;
-        this.rb = rb;
     }
 
     /**
@@ -82,7 +85,7 @@ public class BackwardChaining implements Engine {
         // pilha de regras que alteram a varivel objetivo
         Stack<Rule> goalStack = new Stack<Rule>();
 
-        List<Rule> goalRules = goalRules(rb, variable, value);
+        List<Rule> goalRules = goalRules(variable, value);
 
         goalStack.addAll(goalRules);
 
@@ -153,6 +156,7 @@ public class BackwardChaining implements Engine {
                 e1.printStackTrace();
             }
 
+            rule.update();
             //se a regra e verdadeira, dispara o consequente
             if (rule.getTruth() != null && rule.getTruth()) {
                 rule.fire(wm);

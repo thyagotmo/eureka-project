@@ -10,15 +10,14 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import eureka.environment.Effector;
 import javax.persistence.Column;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
+import javax.persistence.Transient;
 
 /**
  * Representa uma regra com um conjunto de cl�usulas antecedentes e um 
  * cl�usula consequente
  */
 @Entity
-public class Rule implements Observer {
+public class Rule {
 
     @Id
     @GeneratedValue
@@ -27,13 +26,14 @@ public class Rule implements Observer {
     @Column(unique = true)
     private String label;//nome da regra
     @OneToMany
-    @Cascade(CascadeType.ALL)
     private List<Clause> antecedent;//lista de cl�usulas antecedentes(predicado)
     @OneToOne
     private BooleanClause consequent;//cl�usula consequente
+    @Transient
     private Boolean truth;//valor que indica se todos os precedentes s�o verdade
     @ManyToMany
     private List<Effector> effectors;//Atuadores, ainda n�o implementado
+    @Transient
     private boolean fired;
 
     protected Rule() {
@@ -50,7 +50,6 @@ public class Rule implements Observer {
         this.consequent = consequent;
         for (Clause clause : antecedent) {
             this.antecedent.add(clause);
-            clause.addObserver(this);
         }
         this.effectors = new ArrayList<Effector>();
         setFired(false);
@@ -95,7 +94,6 @@ public class Rule implements Observer {
         return this.truth;
     }
 
-    @Override
     public void update() {
         boolean truth = true;
         boolean allClauses = true;
@@ -134,4 +132,6 @@ public class Rule implements Observer {
         }
         setFired(true);
     }
+
+    
 }
